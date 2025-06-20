@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Technician Clock In/Out</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    function submitData() {
+      if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser.");
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const name = document.getElementById("name").value;
+        const action = document.getElementById("action").value;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        const timestamp = new Date().toISOString();
+
+        const data = {
+          name: name,
+          action: action,
+          latitude: latitude,
+          longitude: longitude,
+          timestamp: timestamp
+        };
+
+        fetch(https://script.google.com/macros/s/AKfycbwCyrLMa4g_kpHxlrbv0__r4TwX427NdId6O2-zJ4J-uQkdbTdIqedVZn8P8ZlQqV_f/exec, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => response.text())
+        .then(result => {
+          alert("Submission successful: " + result);
+        })
+        .catch(error => {
+          alert("Error submitting data: " + error);
+        });
+
+      }, function(error) {
+        alert("Unable to retrieve your location: " + error.message);
+      });
+    }
+  </script>
+</head>
+<body>
+  <h2>Technician Clock In/Out</h2>
+  <label for="name">Technician Name:</label><br>
+  <input type="text" id="name" name="name" required><br><br>
+
+  <label for="action">Action:</label><br>
+  <select id="action" name="action">
+    <option value="Clock In">Clock In</option>
+    <option value="Clock Out">Clock Out</option>
+  </select><br><br>
+
+  <button onclick="submitData()">Submit</button>
+</body>
+</html>
